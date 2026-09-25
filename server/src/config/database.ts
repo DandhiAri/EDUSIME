@@ -13,7 +13,6 @@ export async function connectDatabase(): Promise<void> {
     database = client.db(
       process.env.MONGODB_DB
     );
-
     console.log("MongoDB connected");
   } catch (error) {
     console.error(
