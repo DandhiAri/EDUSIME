@@ -1,12 +1,17 @@
 import { ObjectId } from "mongodb";
 import { Request, Response } from "express";
-import { UserRepository } from "../repositories/user.repository";
+import { userRepository } from "../repositories/user.repository";
 import Users from "../models/user";
 import bcrypt from "bcrypt";
 
 export async function updateUser(req: Request, res: Response) {
     try {
         const {id} = req.params;
+        if (!id || Array.isArray(id)) {
+            return res.status(400).json({
+                message: "Id tidak valid"
+            });
+        }
         const {name,email,number_phone,classId} = req.body
         const data: any = {
             name,
@@ -16,7 +21,7 @@ export async function updateUser(req: Request, res: Response) {
         if (classId) {
             data.classId = new ObjectId(classId);
         }
-        const result = await UserRepository.update(id, data);
+        const result = await userRepository.update(id, data);
         if (result.matchedCount === 0) {
             return res.status(404).json({
                 message: "User tidak ditemukan"
@@ -49,7 +54,8 @@ export async function createUser(req: Request, res: Response) {
             number_phone,
             classId ? new ObjectId(classId) : undefined
         );
-        const result = await UserRepository.create(user);
+        const result = await userRepository.create(user);
+        console.log(result)
         res.status(201).json({
             message: "User berhasil dibuat",
             userId: result.insertedId
@@ -57,7 +63,23 @@ export async function createUser(req: Request, res: Response) {
     } catch (error) {
         console.log(error);
         res.status(500).json({
-            message: "Gagal membuat user"
+            message: `Gagal membuat user ${error}` 
+        })
+    }
+}
+
+export async function getUsers(req:Request, res: Response) {
+    try {
+        const users = await userRepository.findAll();
+        res.status(200).json({
+            message: "Data Semua Siswa",
+            total_data : users.length,
+            data: users
+        })
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({
+            message: "Gagal mengambil data user"
         })
     }
 }

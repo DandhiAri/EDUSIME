@@ -26,7 +26,6 @@ export async function createClassroom(req: Request, res: Response) {
     }
 }
 
-// 2. GET ALL CLASSROOMS
 export async function getClassrooms(req: Request, res: Response) {
     try {
         const classrooms = await classroomRepository.findAll();
@@ -40,32 +39,26 @@ export async function getClassrooms(req: Request, res: Response) {
     }
 }
 
-// 3. GET CLASSROOM DENGAN DAFTAR USER (RELASI ONE-TO-MANY)
 export async function getClassroomWithUsers(req: Request, res: Response) {
     try {
         const { id } = req.params;
-
-        // Validasi ID
         if (!ObjectId.isValid(id)) {
             return res.status(400).json({ message: "Format ID kelas tidak valid" });
         }
 
-        // Cari data kelasnya
         const classroom = await classroomRepository.findById(id);
         if (!classroom) {
             return res.status(404).json({ message: "Kelas tidak ditemukan" });
         }
 
-        // Cari semua user yang memiliki classId yang sama dengan ID kelas ini
         const users = await userRepository.findByClassId(id);
 
-        // Gabungkan hasilnya sebagai response
         res.status(200).json({
             message: "Berhasil mengambil data kelas dan siswa",
             data: {
                 classroom: classroom,
                 total_students: users.length,
-                students: users // Daftar user akan muncul di sini
+                students: users
             }
         });
     } catch (error) {
@@ -74,7 +67,6 @@ export async function getClassroomWithUsers(req: Request, res: Response) {
     }
 }
 
-// 4. UPDATE CLASSROOM
 export async function updateClassroom(req: Request, res: Response) {
     try {
         const { id } = req.params;
