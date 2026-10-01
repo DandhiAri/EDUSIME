@@ -14,6 +14,9 @@ export class ClassroomRepository {
     async create(classroom: Classroom) {
         return await this.collection.insertOne(classroom);
     }
+    async findAll() {
+        return await this.collection.find().toArray();
+    }
     async update(id: string, data: Partial<Classroom>) {
         return await this.collection.updateOne(
             { _id: new ObjectId(id)},

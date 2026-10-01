@@ -13,7 +13,7 @@ export async function createClassroom(req: Request, res: Response) {
             return res.status(400).json({ message: "Nama kelas wajib diisi" });
         }
 
-        const newClassroom = new Classroom(name);
+        const newClassroom = new Classroom(new ObjectId(), name);
         const result = await classroomRepository.create(newClassroom);
 
         res.status(201).json({
@@ -42,6 +42,11 @@ export async function getClassrooms(req: Request, res: Response) {
 export async function getClassroomWithUsers(req: Request, res: Response) {
     try {
         const { id } = req.params;
+        if (!id || Array.isArray(id)) {
+            return res.status(400).json({
+                message: "Id tidak valid"
+            });
+        }
         if (!ObjectId.isValid(id)) {
             return res.status(400).json({ message: "Format ID kelas tidak valid" });
         }
@@ -72,6 +77,11 @@ export async function updateClassroom(req: Request, res: Response) {
         const { id } = req.params;
         const { name } = req.body;
 
+        if (!id || Array.isArray(id)) {
+            return res.status(400).json({
+                message: "Id tidak valid"
+            });
+        }
         if (!ObjectId.isValid(id)) {
             return res.status(400).json({ message: "Format ID kelas tidak valid" });
         }
@@ -89,10 +99,16 @@ export async function updateClassroom(req: Request, res: Response) {
     }
 }
 
-// 5. DELETE CLASSROOM
+// ! di perlukan untuk mengecek relasi antar collection, apakah ada yang mennggunakan id kelas ini
 export async function deleteClassroom(req: Request, res: Response) {
     try {
         const { id } = req.params;
+
+        if (!id || Array.isArray(id)) {
+            return res.status(400).json({
+                message: "Id tidak valid"
+            });
+        }
 
         if (!ObjectId.isValid(id)) {
             return res.status(400).json({ message: "Format ID kelas tidak valid" });
