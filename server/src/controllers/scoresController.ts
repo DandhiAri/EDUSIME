@@ -12,6 +12,7 @@ export async function createScore(req: Request, res: Response) {
     try {
         const { studentId, subjectId, schoolYearId, jenis_nilai, nilai, tanggal } = req.body;
         const scores = await scoresRepository.create({
+            _id: new ObjectId(),
             studentId,
             subjectId,
             schoolYearId,

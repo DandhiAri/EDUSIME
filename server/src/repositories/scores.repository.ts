@@ -1,5 +1,5 @@
 import { ObjectId } from "mongodb";
-import { getDatabase } from "../config/mongodb";
+import { getDatabase } from "../config/database";
 import Scores from "../models/scores";
 
 export class ScoresRepository {
