@@ -37,6 +37,9 @@ export class UserRepository {
             classId: new ObjectId(classId)
         }).toArray();
     }
+    async findByEmail(email: string) {
+        return await this.collection.findOne({email})
+    }
 }
 
 export const userRepository = new UserRepository();
