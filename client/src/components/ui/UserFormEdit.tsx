@@ -117,7 +117,7 @@ export default function UserEditPage() {
         </CardContent>
 
         <CardFooter className="mt-6 flex justify-end gap-2">
-          <Button type="button" variant="outline" onClick={() => navigate("/users")}>
+          <Button type="button" variant="outline" onClick={() => navigate("/")}>
             Batal
           </Button>
           <Button type="submit" disabled={fetching || saving}>

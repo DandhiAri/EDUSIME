@@ -3,10 +3,15 @@ import type { CreateUserInput, UpdateUserInput, User } from "@shareit/shared";
 const BASE_URL = import.meta.env.VITE_API_URL ?? "/api";
 
 async function request<T>(path:string, options?: RequestInit): Promise<T> {
+    const token = localStorage.getItem("token");
     const res = await fetch(`${BASE_URL}${path}`, {
-        headers: {"Content-type": "application/json"},
+        headers: {"Content-type": "application/json",...(token  ? { Authorization: `Bearer ${token}`} : {})},
         ...options,
-    }) 
+    })
+    if (res.status === 401) {
+        localStorage.removeItem("token");
+        window.location.href = "/login";
+    }
     const body = await res.json();
     if (!res.ok) throw new Error(body.message ?? "Terjadi kesalahan")
     return body;

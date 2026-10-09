@@ -59,7 +59,7 @@ export async function login(req:Request, res: Response) {
 // menampilkan profil nama di navbar dan menentukan tampilan role yang sesuai
 export async function me(req: Request, res: Response) {
     try {
-        const user = await userRepository.findByEmail(req.user!.id)
+        const user = await userRepository.findById(req.user!.id)
         if(!user) return res.status(401).json({ message: "User tidak ditemukan" })
         res.json({ message: "Profil", data: toUserResponse(user) })
     } catch (error) {

@@ -3,7 +3,7 @@ import type { LoginInput, User } from "@shareit/shared";
 const BASE_URL = import.meta.env.VITE_API_URL ?? "/api";
 
 export async function login(data: LoginInput): Promise<{ user: User; token: string }> {
-  const res = await fetch(`${BASE_URL}/auth/login`, {
+  const res = await fetch(`${BASE_URL}/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
@@ -13,4 +13,15 @@ export async function login(data: LoginInput): Promise<{ user: User; token: stri
   if (!res.ok) throw new Error(body.message ?? "Login gagal");
 
   return body.data;
+}
+export async function getMe() : Promise<User> {
+  const token = localStorage.getItem("token");
+
+  const res = await fetch(`${BASE_URL}/me`, {
+    headers: { Authorization: `Bearer ${token}` },
+  })
+  const body = await res.json();
+  if(!res.ok) throw new Error(body.message ?? "Sesi tidak valid")
+
+  return body.data
 }

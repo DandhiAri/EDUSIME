@@ -8,6 +8,7 @@ import { login } from "@/api/auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useAuth } from "@/context/AuthContext";
 
 const features = [
   { icon: BookOpen, text: "Data guru, siswa, dan kelas dalam satu tempat" },
@@ -17,6 +18,7 @@ const features = [
 
 export default function LoginPage() {
   const navigate = useNavigate();
+  const { setSession } = useAuth();
   const [form, setForm] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [showPassword, setShowPassword] = useState(false);
@@ -40,9 +42,9 @@ export default function LoginPage() {
     setLoading(true);
     try {
       const { user, token } = await login(parsed.data);
-      localStorage.setItem("token", token); // sementara; nanti dipindah ke auth state
+      setSession(user, token);
       toast.success(`Selamat datang, ${user.name}`);
-      navigate("/");
+      navigate("/", { replace: true });
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Terjadi kesalahan");
     } finally {

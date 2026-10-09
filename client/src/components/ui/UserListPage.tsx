@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { toast } from "sonner";
 import type { Role, User } from "@shareit/shared";
 import { deleteUser, getUsers } from "@/api/users";
@@ -12,6 +12,7 @@ import {
 import {
   Card, CardContent, CardDescription, CardHeader, CardTitle,
 } from "@/components/ui/card";
+import { useAuth } from "@/context/AuthContext";
 
 const roleVariant: Record<Role, "default" | "secondary" | "outline"> = {
   admin: "default",
@@ -22,19 +23,28 @@ const roleVariant: Record<Role, "default" | "secondary" | "outline"> = {
 export default function UserListPage() {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
-
-  const loadUsers = async () => {
-    try {
-      setUsers(await getUsers());
-    } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Gagal memuat data");
-    } finally {
-      setLoading(false);
-    }
-  };
+  const { logout } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    loadUsers();
+    let cancelled = false;
+
+    getUsers()
+      .then((loadedUsers) => {
+        if (!cancelled) setUsers(loadedUsers);
+      })
+      .catch((err) => {
+        if (!cancelled) {
+          toast.error(err instanceof Error ? err.message : "Gagal memuat data");
+        }
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   const handleDelete = async (user: User) => {
@@ -122,6 +132,7 @@ export default function UserListPage() {
             ))}
           </TableBody>
         </Table>
+        <Button variant="outline" onClick={() => { logout(); navigate("/login"); }}>Keluar</Button>
       </CardContent>
     </Card>
   );
