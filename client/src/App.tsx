@@ -6,6 +6,7 @@ import "./App.css";
 import UserListPage from "#components/ui/UserListPage";
 import LoginPage from "#components/ui/LoginPage";
 import { AuthProvider } from "./context/AuthContext";
+import { GuestOnly, RequireAuth, RequireRole } from "./routes/guards";
 
 function App() {
   return (
@@ -14,13 +15,15 @@ function App() {
         <AuthProvider>
           <Toaster position="top-center" richColors />
           <Routes>
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/" element={<UserListPage />} />
-            {/* <Route path='/' element={<Navigate to={"/users"} replace/>}/> */}
-            <Route path="users">
-              {/* <Route index element={ <UserListPage/> }/> */}
-              <Route path="create" element={<UserForm />} />
-              <Route path=":id/edit" element={<UserFormEdit />} />
+            <Route element={<GuestOnly/>}>
+              <Route path="/login" element={<LoginPage/>}/>
+            </Route>
+            <Route element={<RequireAuth/>}>
+              <Route element={<RequireRole allow={["admin"]}/>}>
+              <Route path="/" element={<UserListPage />} />
+                <Route path="create" element={<UserForm />} />
+                <Route path=":id/edit" element={<UserFormEdit />} />
+              </Route>
             </Route>
             <Route path="*" element={<p>Halaman tidak ditemukan</p>} />
           </Routes>
