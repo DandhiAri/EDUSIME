@@ -1,6 +1,6 @@
 import { ObjectId } from "mongodb";
 
-export default class Attendance {
+export default class Attendence {
     constructor(
         public _id: ObjectId,
         public studentId: ObjectId,
@@ -8,5 +8,7 @@ export default class Attendance {
         public tanggal: Date,
         public status: string,
         public keterangan: string,
+        public createdAt: Date = new Date(),
+        public updatedAt: Date = new Date(),
     ) {}
 }

@@ -6,7 +6,6 @@ import { updateUserSchema, createUserSchema } from "@shareit/shared"
 import type { User as UserResponse } from "@shareit/shared"
 import bcrypt from "bcrypt";
 
-console.log(updateUserSchema)
 function toUserResponse(user: Users): UserResponse {
     return {
         _id: user._id.toString(),

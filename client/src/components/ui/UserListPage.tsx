@@ -65,7 +65,7 @@ export default function UserListPage() {
           <CardTitle>Daftar User</CardTitle>
           <CardDescription>Total {users.length} user</CardDescription>
         </div>
-        <Link to="/users/create" className={buttonVariants()}>
+        <Link to="/create" className={buttonVariants()}>
           + Tambah User
         </Link>
       </CardHeader>
@@ -114,7 +114,7 @@ export default function UserListPage() {
                 <TableCell className="text-right">
                   <div className="flex justify-end gap-2">
                     <Link
-                      to={`/users/${u._id}/edit`}
+                      to={`/${u._id}/edit`}
                       className={buttonVariants({ variant: "outline", size: "sm" })}
                     >
                       Edit
