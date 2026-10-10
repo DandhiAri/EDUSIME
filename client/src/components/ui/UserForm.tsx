@@ -46,7 +46,7 @@ export default function UserForm() {
       await createUser(parsed.data);
       toast.success("User berhasil ditambahkan")
       setForm(initialForm);
-      navigate("/users")
+      navigate("/")
     } catch (err) {
       console.error("Gagal:", err instanceof Error ? err.message : err);
     } finally {
