@@ -3,12 +3,6 @@ import { Request, Response } from "express";
 import { studentsRepository } from "../repositories/students.repository";
 import Students from "../models/students";
 
-export async function viewCreateStudent(req: Request, res: Response) {
-    res.render("client/src/views/students/createStudent", {
-        title: "Create Student"
-    });
-}
-
 export async function createStudent(req: Request, res: Response) {
     try {
         const {nis, nik, name, jenis_kelamin, no_hp, tanggal_lahir, tempat_lahir, agama, alamat, userId, classroomId} = req.body;

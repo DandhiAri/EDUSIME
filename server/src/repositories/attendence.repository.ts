@@ -1,13 +1,24 @@
-import { ObjectId } from "mongodb";
+import { Filter,ObjectId } from "mongodb";
 import { getDatabase } from "../config/database";
 import Attendance from "../models/attendence";
+
+export interface AttendenceFilter {
+    classroomId?: string;
+    studentId?: string;
+    tanggal?: Date;
+}
 
 export class AttendenceRepository {
     private get collection() {
         return getDatabase().collection<Attendance>("attendence")
     }
-    async findAll() {
-        return await this.collection.find().toArray()
+    async findAll(f: AttendenceFilter) {
+        const query: Filter<Attendance> = {};
+        if(f.classroomId) query.classroomId = new ObjectId(f.classroomId);
+        if(f.studentId) query.studentId = new ObjectId(f.studentId);
+        if(f.tanggal) query.tanggal = f.tanggal
+        
+        return this.collection.find(query).sort({ tanggal: -1, createdAt: -1 }).toArray()
     }
     async findById(id: string) {
         return await this.collection.findOne({
