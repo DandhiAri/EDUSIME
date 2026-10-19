@@ -1,13 +1,13 @@
 import { ObjectId } from "mongodb";
 
-export type Status = "" | "" | ""
+export type Status = "draft" | "final" | "cetak"
 
 export default class SchoolReport {
     constructor(
         public _id : ObjectId,
-        public total_sakit : string,
-        public total_izin : string,
-        public total_alpha : string,
+        public total_sakit : number,
+        public total_izin : number,
+        public total_alpha : number,
         public catatan_wali_kelas: string,
         public status : Status,
         public studentId : ObjectId,

@@ -39,6 +39,7 @@ export class AttendenceRepository {
             _id: new ObjectId(id)
         })
     }
+    // tambahan fitur lain nya
 }
 
 export const attendenceRepository = new AttendenceRepository
