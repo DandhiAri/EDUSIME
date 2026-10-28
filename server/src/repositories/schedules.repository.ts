@@ -5,7 +5,7 @@ import Schedule from "../models/schedule";
 export interface ScheduleFilter {
     classroomId?: string,
     subjectId? : string,
-    teacherId : string
+    teacherId? : string
 }
 
 export class ScheduleRepository {

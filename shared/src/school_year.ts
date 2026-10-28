@@ -25,6 +25,7 @@ export type UpdateSchoolYearInput = z.infer<typeof updateSchoolYearSchema>;
 export interface SchoolYear {
     _id: string,
     tahun: string,
+    semester: string,
     tanggal_mulai: string,
     tanggal_selesai: string,
 }

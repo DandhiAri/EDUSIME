@@ -101,7 +101,7 @@ export async function createAttendence(req:Request, res: Response) {
     }
     try {
         const { studentId,classroomId,tanggal,status,keterangan } = parsed.data;
-        if (!ObjectId.isValid(studentId) || ObjectId.isValid(classroomId)) {
+        if (!ObjectId.isValid(studentId) || !ObjectId.isValid(classroomId)) {
             return res.status(400).json({ message: "Id siswa atau kelas tidak valid" });
         }
         const attendence = new Attendence(

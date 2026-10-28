@@ -17,7 +17,7 @@ export type UpdateScheduleInput = z.infer<typeof updateScheduleSchema>;
 
 export interface Schedule {
     _id: string,
-    classsroomId: string,
+    classroomId: string,
     subjectId: string,
     teacherId: string,
     day: "senin" | "selasa" | "rabu" | "kamis" | "jumat" | "sabtu",
