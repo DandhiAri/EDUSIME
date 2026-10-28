@@ -3,11 +3,6 @@ import { Request, Response } from "express";
 import { subjectsRepository } from "../repositories/subjects.repository";
 import Subjects from "../models/subjects";
 
-export async function viewCreateSubject(req: Request, res: Response) {
-    res.render("client/src/views/subjects/createSubject", {
-        title: "Create Subject"
-    });
-}
 export async function createSubject(req: Request, res : Response) {
     try {
         const { code, name, kkm } = req.body
